@@ -1,20 +1,6 @@
 # 🦉 Owl's Nook – Book Recommendation Platform with AI community
 
-A smart and social mobile app for discovering books through AI-powered community interactions.
-
----
-
-**Owl's Nook** is a mobile application built using the **MERN Stack + React Native (Expo)** that enhances book discovery through intelligent suggestions and community engagement.
----
-## 📸 Preview
-
-### 📱 Home Screen
-![Home Screen](./assets/images/home-screen.png)
-
-### 🧠 AI Recommendation Chat
-![AI Chat](./assets/images/ai-chat.png)
-
----
+A smart and social mobile app for discovering books through AI-powered community interactions It is a mobile application built using the **MERN Stack + React Native (Expo)** that enhances book discovery through intelligent suggestions and community engagement.
 
 ## 🛠 Tech Stack
 
