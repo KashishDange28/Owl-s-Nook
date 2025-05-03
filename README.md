@@ -1,7 +1,7 @@
 # Owl's Nook - AI-Powered Book Recommendation Platform
 
 ## Project Overview
-Owl's Nook is an innovative mobile application creted using MERN Stack in react native expo that revolutionizes book discovery through AI-powered community interactions. Leveraging cutting-edge technology, the app creates a dynamic ecosystem where book lovers can share, discover, and engage with literary content in unprecedented ways.
+Owl's Nook is an innovative mobile application created using MERN Stack in react native expo that revolutionizes book discovery through AI-powered community interactions. Leveraging cutting-edge technology, the app creates a dynamic ecosystem where book lovers can share, discover, and engage with literary content in unprecedented ways.
 
 ## Key Innovations
 - **AI-Powered Community Chat**: Intelligent conversational features that enhance book recommendations
@@ -21,11 +21,6 @@ Traditional book recommendation platforms lack personalization and meaningful co
 - Providing intelligent, context-aware book suggestions
 - Creating an interactive platform for book enthusiasts
 - Leveraging AI to understand nuanced reading preferences
-
-## Technical Highlights
-- Intelligent recommendation algorithms
-- Real-time community interactions
-- Seamless cross-platform mobile experience
 
 ## Tech Stack
 
@@ -86,7 +81,7 @@ CLOUDINARY_API_SECRET=your_cloudinary_api_secret
 npm run dev
 ```
 
-### Mobile App Setup
+### Frontend App Setup
 1. Navigate to mobile directory
 ```bash
 cd mobile
@@ -104,11 +99,11 @@ npx expo start
 ```
 
 ## Environment Configuration
-- Development: Use local MongoDB and backend
+- Development: Use local MongoDB Atlas and backend
 - Production: Configure cloud MongoDB and backend deployment
 
 ## Testing
-- Backend: Jest
+- Backend: Postman
 - Frontend: React Native Testing Library
 
 ## Deployment
