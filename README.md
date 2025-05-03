@@ -2,6 +2,15 @@
 
 A smart and social mobile app for discovering books through AI-powered community interactions It is a mobile application built using the **MERN Stack + React Native (Expo)** that enhances book discovery through intelligent suggestions and community engagement.
 
+## 📸 App Screenshots
+
+### Home Screen
+![Home Screen](mobile/assets/images/home-screen.png)
+
+### AI Chat Screen
+![AI Chat](mobile/assets/images/ai-chat.png)
+
+
 ## 🛠 Tech Stack
 
 ### Frontend
