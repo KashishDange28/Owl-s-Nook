@@ -102,20 +102,9 @@ npx expo start
 - Development: Use local MongoDB Atlas and backend
 - Production: Configure cloud MongoDB and backend deployment
 
-## Testing
-- Backend: Postman
-- Frontend: React Native Testing Library
-
-## Deployment
-- Backend: Render or Heroku
-- Frontend: Expo App Store / Google Play Store
-
-## Contributing
-1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
+## Testing and Deployment
+- Backend: Postman, deploy: Render or Heroku
+- Frontend: React Native Testing Library, deploy: Expo App Store
 
 ## License
 Distributed under the MIT License. See [LICENSE](LICENSE) file for more details.
