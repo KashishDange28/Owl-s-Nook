@@ -1,34 +1,27 @@
-# Owl's Nook - Book Recommendation Platform with AI community 🦉📱
+# 🦉 Owl's Nook – Book Recommendation Platform with AI community
 
-## Project Overview
-Owl's Nook is an innovative mobile application created using MERN Stack in react native expo that revolutionizes book discovery through AI-powered community interactions. Leveraging cutting-edge technology, the app creates a dynamic ecosystem where book lovers can share, discover, and engage with literary content in unprecedented ways.
+A smart and social mobile app for discovering books through AI-powered community interactions.
 
-## Key Innovations
-- **AI-Powered Community Chat**: Intelligent conversational features that enhance book recommendations
-- **Personalized Discovery**: Machine learning algorithms that understand user preferences
-- **Social Reading Experience**: Connect with like-minded readers and explore diverse literary worlds
+---
 
-## Core Features
-- 🔐 Secure User Authentication
-- 📚 Personal Book Collections
-- ⭐ Book Rating and Captioning
-- 🤖 AI-Driven Recommendation Engine
-- 📸 Image-Based Book Uploads
-- 💬 Community Interaction Spaces
+**Owl's Nook** is a mobile application built using the **MERN Stack + React Native (Expo)** that enhances book discovery through intelligent suggestions and community engagement.
+---
+## 📸 Preview
 
-## Problem Solved
-Traditional book recommendation platforms lack personalization and meaningful community engagement. Owl's Nook bridges this gap by:
-- Providing intelligent, context-aware book suggestions
-- Creating an interactive platform for book enthusiasts
-- Leveraging AI to understand nuanced reading preferences
+### 📱 Home Screen
+![Home Screen](./assets/images/home-screen.png)
 
-## Tech Stack
+### 🧠 AI Recommendation Chat
+![AI Chat](./assets/images/ai-chat.png)
+
+---
+
+## 🛠 Tech Stack
 
 ### Frontend
-- React Native
-- Expo
-- Zustand (State Management)
-- Axios (HTTP Requests)
+- React Native (Expo)
+- Zustand
+- Axios
 - Expo Router
 - Expo Image Picker
 
@@ -37,24 +30,20 @@ Traditional book recommendation platforms lack personalization and meaningful co
 - Express.js
 - MongoDB
 - Mongoose
-- Cloudinary (Image Storage)
-- JSON Web Token (Authentication)
+- Cloudinary
+- JSON Web Token (JWT) Authentication
 
 ### Development Tools
 - TypeScript
 - ESLint
 - Prettier
 
-## Prerequisites
-- Node.js (v16+)
-- npm or Yarn
-- Expo CLI
-- MongoDB
-- Cloudinary Account
+---
 
-## Installation
+## ⚙️ Installation
 
-### Clone the Repository
+### 1. Clone the Repository
+
 ```bash
 git clone https://github.com/yourusername/owls-nook.git
 cd owls-nook
@@ -98,17 +87,9 @@ const API_URL = 'http://your-local-ip:3000/api'
 npx expo start
 ```
 
-## Environment Configuration
-- Development: Use local MongoDB Atlas and backend
-- Production: Configure cloud MongoDB and backend deployment
-
 ## Testing and Deployment
 - Backend: Postman, deploy: Render or Heroku
 - Frontend: React Native Testing Library, deploy: Expo App Store
 
 ## License
 Distributed under the MIT License. See [LICENSE](LICENSE) file for more details.
-
-## Contact
-Kashish Dange - [Your Email]
-Project Link: [https://github.com/yourusername/owls-nook](https://github.com/yourusername/owls-nook)
