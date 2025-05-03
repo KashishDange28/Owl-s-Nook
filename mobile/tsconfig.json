@@ -1,0 +1,19 @@
+{
+  "extends": "expo/tsconfig.base",  // Inherits base TypeScript configuration from Expo
+  "compilerOptions": {
+    "strict": true,  // Enables strict type checking
+    "paths": {
+      "@/*": [
+        "./*"  // Allows using @/ as a root import path
+      ]
+    }
+  },
+  "include": [
+    "**/*.ts",       // Include all TypeScript files
+    "**/*.tsx",      // Include all TypeScript React files
+    ".expo/types/**/*.ts",  // Include Expo type definitions
+    "expo-env.d.ts", // Include Expo environment definitions
+    "app/index.jsx", // Explicitly include specific files
+    "app/_layout.jsx"
+  ]
+}
