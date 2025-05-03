@@ -2,15 +2,6 @@
 
 A smart and social mobile app for discovering books through AI-powered community interactions It is a mobile application built using the **MERN Stack + React Native (Expo)** that enhances book discovery through intelligent suggestions and community engagement.
 
-## 📸 App Screenshots
-
-### Home Screen
-![Home Screen](mobile/assets/images/home-screen.png)
-
-### AI Chat Screen
-![AI Chat](mobile/assets/images/ai-chat.png)
-
-
 ## 🛠 Tech Stack
 
 ### Frontend
@@ -27,6 +18,7 @@ A smart and social mobile app for discovering books through AI-powered community
 - Mongoose
 - Cloudinary
 - JSON Web Token (JWT) Authentication
+- Cohere API for Chat Community
 
 ### Development Tools
 - TypeScript
@@ -85,6 +77,11 @@ npx expo start
 ## Testing and Deployment
 - Backend: Postman, deploy: Render or Heroku
 - Frontend: React Native Testing Library, deploy: Expo App Store
+- ## 📸 App Screenshots
+
+![Home Screen](mobile/assets/images/home-screen.png)
+![AI Chat](mobile/assets/images/ai-chat.png)
+
 
 ## License
 Distributed under the MIT License. See [LICENSE](LICENSE) file for more details.
