@@ -1,50 +1,83 @@
-# Welcome to your Expo app 👋
+# Owl's Nook - Mobile Application with Expo 🦉📱
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+## Expo Project Overview
 
-## Get started
+### About Expo
+[Expo](https://expo.dev) is a powerful set of tools and services built around React Native, enabling rapid mobile app development with JavaScript and React.
 
-1. Install dependencies
+### Project Configuration
+- **Expo SDK Version**: Latest stable release
+- **Development Environment**: Expo CLI
+- **Target Platforms**: iOS, Android, Web
 
-   ```bash
-   npm install
-   ```
+## Key Expo Features Utilized
 
-2. Start the app
+### 1. Expo Managed Workflow
+- Simplified build and deployment process
+- Automatic native dependency management
+- Easy over-the-air updates
 
-   ```bash
-    npx expo start
-   ```
+### 2. Expo Modules
+- **Expo Router**: File-based routing system
+- **Expo Image Picker**: Native image selection
+- **Expo Vector Icons**: Comprehensive icon library
+- **Expo Authentication**: Secure user management
 
-In the output, you'll find options to open the app in a
+### 3. Development Tools
+- Hot Reloading
+- Expo Go for instant testing
+- Cross-platform compatibility
+- TypeScript support
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
-
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
-
-## Get a fresh project
-
-When you're ready, run:
-
-```bash
-npm run reset-project
+## Project Structure
+```
+mobile/
+├── app/                # Routing and page components
+├── assets/             # Static assets
+├── components/         # Reusable UI components
+├── constants/          # App-wide constants
+├── store/              # State management
+└── types/              # TypeScript type definitions
 ```
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+## Getting Started
 
-## Learn more
+### Prerequisites
+- Node.js (16+)
+- npm or Yarn
+- Expo CLI
+- Expo Go mobile app
 
-To learn more about developing your project with Expo, look at the following resources:
+### Installation
+```bash
+# Install dependencies
+npm install
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+# Start development server
+npx expo start
 
-## Join the community
+# Run on specific platform
+npx expo start --ios
+npx expo start --android
+```
 
-Join our community of developers creating universal apps.
+## Build and Deployment
+- `npx expo build:android`
+- `npx expo build:ios`
+- Publish to Expo's app store
 
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+## Troubleshooting
+- Clear Expo cache: `npx expo start -c`
+- Check Expo compatibility
+- Verify Node.js version
+
+## Learn More
+- [Expo Documentation](https://docs.expo.dev)
+- [React Native Learning](https://reactnative.dev)
+
+## Contributing
+Follow Expo best practices and our project guidelines.
+
+## Community
+- [Expo GitHub](https://github.com/expo/expo)
+- [Expo Discord](https://chat.expo.dev)
