@@ -1,4 +1,4 @@
-# Owl's Nook - AI-Powered Book Recommendation Platform
+# Owl's Nook - Book Recommendation Platform with AI community
 
 ## Project Overview
 Owl's Nook is an innovative mobile application created using MERN Stack in react native expo that revolutionizes book discovery through AI-powered community interactions. Leveraging cutting-edge technology, the app creates a dynamic ecosystem where book lovers can share, discover, and engage with literary content in unprecedented ways.
