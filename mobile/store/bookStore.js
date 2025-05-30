@@ -50,16 +50,75 @@ export const useBookStore = create((set) => ({
         userBooks: [res.data.book, ...state.userBooks],
         loading: false 
       }));
+      
+      // Show success alert with book details
+      Alert.alert(
+        'Success',
+        `Your book recommendation "${res.data.book.title}" has been added successfully!`,
+        [
+          {
+            text: 'View Book',
+            onPress: () => {
+              // Navigate to book details if needed
+            },
+            style: 'default'
+          },
+          {
+            text: 'OK',
+            style: 'cancel'
+          }
+        ]
+      );
       return res.data;
     } catch (err) {
       set({ error: err.response?.data?.message, loading: false });
+      Alert.alert(
+        'Error',
+        err.response?.data?.message || 'Failed to add book recommendation',
+        [
+          {
+            text: 'Retry',
+            onPress: () => {
+              // Could add retry logic here
+            },
+            style: 'default'
+          },
+          {
+            text: 'Cancel',
+            style: 'cancel'
+          }
+        ]
+      );
       throw err;
+    }
+  },
+
+  // Update book
+  updateBook: async (bookId, updatedData) => {
+    set({ loading: true });
+    try {
+      const token = useAuthStore.getState().token;
+      const res = await axios.put(`http://192.168.56.1:3000/api/books/${bookId}`, updatedData, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      
+      // Update both books and userBooks arrays
+      set((state) => ({
+        books: state.books.map(book => 
+          book._id === bookId ? res.data.book : book
+        ),
+        userBooks: state.userBooks.map(book => 
+          book._id === bookId ? res.data.book : book
+        ),
+        loading: false
+      }));
+    } catch (err) {
+      set({ error: err.response?.data?.message, loading: false });
     }
   },
 
   // Delete book
   deleteBook: async (bookId) => {
-    console.log("Attempting to delete book with ID:", bookId);
     
     // Validate bookId
     if (!bookId) {

@@ -27,6 +27,17 @@ export default function CreateBook() {
 
   const pickImage = useCallback(async () => {
     try {
+      // Request permissions
+      const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
+      if (status !== 'granted') {
+        Alert.alert(
+          'Permission Required',
+          'We need permission to access your photos to select a book image.'
+        );
+        return;
+      }
+
+      // Pick image
       const result = await ImagePicker.launchImageLibraryAsync({
         mediaTypes: ImagePicker.MediaTypeOptions.Images,
         allowsEditing: true,
@@ -36,11 +47,35 @@ export default function CreateBook() {
       });
 
       if (!result.canceled) {
-        handleInputChange('image', result.assets[0].uri);
-        handleInputChange('base64Image', result.assets[0].base64);
+        const imageUri = result.assets[0].uri;
+        const base64 = result.assets[0].base64;
+        
+        // Validate image size
+        const response = await fetch(imageUri);
+        const blob = await response.blob();
+        const imageSize = blob.size;
+        
+        if (imageSize > 5000000) { // 5MB limit
+          Alert.alert(
+            'Image Too Large',
+            'Please select an image smaller than 5MB.'
+          );
+          return;
+        }
+
+        handleInputChange('image', imageUri);
+        handleInputChange('base64Image', base64);
+        Alert.alert(
+          'Image Selected',
+          'Your book image has been selected. Tap Save to add the book.'
+        );
       }
     } catch (error) {
-      console.log('Error picking image:', error);
+      console.error('Error picking image:', error);
+      Alert.alert(
+        'Error',
+        'Failed to pick image. Please try again.'
+      );
     }
   }, [handleInputChange]);
 
@@ -79,6 +114,9 @@ export default function CreateBook() {
           : `data:image/jpeg;base64,${formData.base64Image}`)
         : null;
 
+      // Show loading state
+      Alert.alert('Uploading...', 'Please wait while we add your book');
+      
       // Send to backend
       const result = await createBook({
         title: formData.title,

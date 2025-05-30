@@ -164,10 +164,10 @@ export default function Home() {
           <View key={book._id || book.id} style={styles.bookCard}>
             <View style={styles.userInfo}>
               <Image 
-                source={{ uri: book.user?.avatar || 'https://api.dicebear.com/6.x/avataaars/svg?seed=default' }}
+                source={{ uri: book.user?.profileImage || 'https://api.dicebear.com/6.x/avataaars/svg?seed=default' }}
                 style={styles.userAvatar}
               />
-              <Text style={styles.userName}>{book.user?.name || 'Anonymous'}</Text>
+              <Text style={styles.userName}>{book.user?.username || 'Anonymous'}</Text>
             </View>
 
             <TouchableOpacity 
