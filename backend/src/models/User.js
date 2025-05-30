@@ -5,27 +5,40 @@ const userSchema = new mongoose.Schema({
     username: { 
         type: String, 
         required: true,
-        unique: true
-},
-    email:    {
-     type: String, 
-    required: true,
-    unique: true
-},
+        unique: true,
+        trim: true,
+        minlength: 3,
+        maxlength: 30
+    },
+    email: {
+        type: String, 
+        required: true,
+        unique: true,
+        trim: true,
+        lowercase: true,
+        validate: {
+          validator: function(value) {
+            return /^\S+@\S+\.\S+$/.test(value);
+          },
+          message: 'Please enter a valid email address'
+        }
+    },
     password: {   
-          type: String, 
+        type: String, 
         required: true,
         minlength: 6
     },
     profileImage: {
         type: String,
-        default: ""
+        default: 'https://api.dicebear.com/6.x/avataaars/svg?seed=profile'
     },
-},
-    
-        {timestamps: true }
-
-);
+    createdAt: {
+        type: Date,
+        default: Date.now
+    }
+}, {
+    timestamps: true
+});
 //hash
 userSchema.pre("save", async function (next) {
     if (!this.isModified("password")) {

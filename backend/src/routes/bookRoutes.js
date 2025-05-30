@@ -1,61 +1,63 @@
 import express from "express";
-import cloudinary from "../lib/cloudinary.js";
 import Book from "../models/Book.js";
 import protectRoute from "../middleware/auth.middleware.js";
+import cloudinary from "../lib/cloudinary.js";
+
+// Array of book-related images from Unsplash
+const bookImages = [
+  "https://images.unsplash.com/photo-1512820790803-83ca734da794?auto=format&fit=crop&w=500&q=60", // Book cover with coffee
+  "https://images.unsplash.com/photo-1542744099-5bf3e6f379ba?auto=format&fit=crop&w=500&q=60", // Vintage books
+  "https://images.unsplash.com/photo-1555041469-a586c61ea9bc?auto=format&fit=crop&w=500&q=60", // Bookshelf
+  "https://images.unsplash.com/photo-1512820790803-83ca734da794?auto=format&fit=crop&w=500&q=60", // Book cover with coffee
+  "https://images.unsplash.com/photo-1512820790803-83ca734da794?auto=format&fit=crop&w=500&q=60", // Book cover with coffee
+  "https://images.unsplash.com/photo-1512820790803-83ca734da794?auto=format&fit=crop&w=500&q=60"  // Book cover with coffee
+];
 
 const router = express.Router();
 
 // POST - Create a new book
 router.post("/", protectRoute, async (req, res) => {
     try {
-        console.log("Incoming request body:", req.body);
-        
-        const { title, caption, rating, image } = req.body;
-        
-        // Validation
-        if (!image || !title || !caption || !rating) {
-            return res.status(400).json({ 
-                message: "All fields are required",
-                received: { title, caption, rating, image: !!image }
-            });
-        }
+      const { title, caption, rating, image } = req.body;
 
-        // Upload image to Cloudinary
-        console.log("Uploading to Cloudinary...");
-        const uploadResponse = await cloudinary.uploader.upload(image, {
-            folder: "book_covers",
-            resource_type: "auto"
-        }).catch(err => {
-            console.error("Cloudinary upload error:", err);
-            throw new Error("Image upload failed");
-        });
+      // Validation
+      if (!title || !caption || !rating) {
+        return res.status(400).json({ message: "Title, caption, and rating are required" });
+      }
 
-        // Create book document
-        console.log("Creating book document...");
-        const newBook = new Book({
-            title,
-            caption,
-            rating,
-            image: uploadResponse.secure_url,
-            user: req.user._id
-        });
+      // If no image provided, use default
+      const bookImage = image || "https://images.unsplash.com/photo-1512820790803-83ca734da794?auto=format&fit=crop&w=500&q=60";
 
-        await newBook.save();
-        console.log("Book saved successfully");
-        
-        res.status(201).json({
-            message: "Book created successfully",
-            book: newBook
-        });
+      // Create book document
+      console.log("Creating book document...");
+      const newBook = new Book({
+        title,
+        caption,
+        rating,
+        image: bookImage,
+        user: req.user._id
+      });
 
+      // Save book
+      console.log("Saving book...");
+      await newBook.save();
+      console.log("Book saved successfully");
+
+      res.status(201).json({
+        message: "Book recommendation created successfully!",
+        book: newBook,
+        success: true
+      });
     } catch (error) {
-        console.error("Full error:", error);
-        res.status(500).json({ 
-            message: error.message || "Internal server error",
-            stack: process.env.NODE_ENV === 'development' ? error.stack : undefined
-        });
+      console.error("Error creating book:", error);
+      res.status(500).json({
+        message: error.message || "Failed to create book recommendation",
+        error: error.message,
+        success: false
+      });
     }
-});
+  }
+);
 
 // GET - Get paginated books
 router.get("/", protectRoute, async (req, res) => {
@@ -64,24 +66,24 @@ router.get("/", protectRoute, async (req, res) => {
         const limit = parseInt(req.query.limit) || 10;
         const skip = (page - 1) * limit;
 
-        const totalBooks = await Book.countDocuments();
-
         const books = await Book.find()
+            .populate('user', 'username profileImage')
             .sort({ createdAt: -1 })
             .skip(skip)
-            .limit(limit)
-            .populate("user", "username profileImage");
+            .limit(limit);
 
-        res.json({
+        const totalBooks = await Book.countDocuments();
+
+        res.status(200).json({
             books,
-            currentPage: page,
-            totalBooks,
             totalPages: Math.ceil(totalBooks / limit),
+            currentPage: page
         });
     } catch (error) {
-        console.error("Error in get books route:", error);
-        res.status(500).json({ 
-            message: error.message || "Internal server error" 
+        console.error("Error fetching books:", error);
+        res.status(500).json({
+            message: "Error fetching books",
+            error: error.message
         });
     }
 });
@@ -105,33 +107,67 @@ router.get("/user", protectRoute, async (req, res) => {
 // DELETE - Delete a book
 router.delete("/:id", protectRoute, async (req, res) => {
     try {
+        // Validate ID format
+        if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
+            return res.status(400).json({ message: "Invalid book ID" });
+        }
+
+        // Find and delete the book in one operation
+        const deletedBook = await Book.findOneAndDelete({
+            _id: req.params.id,
+            user: req.user._id
+        });
+
+        if (!deletedBook) {
+            return res.status(404).json({ message: "Book not found or unauthorized" });
+        }
+
+        res.status(200).json({ 
+            message: "Book deleted successfully",
+            book: deletedBook
+        });
+    } catch (error) {
+        console.error("Error in delete book route:", error);
+        res.status(500).json({ 
+            message: error.message || "Internal server error",
+            error: process.env.NODE_ENV === 'development' ? error : undefined
+        });
+    }
+});
+
+// PUT - Update a book
+router.put("/:id", protectRoute, async (req, res) => {
+    try {
+        const { title, caption, rating } = req.body;
+        
+        // Validation
+        if (!title || !caption || !rating) {
+            return res.status(400).json({ 
+                message: "Title, caption, and rating are required",
+                received: { title, caption, rating }
+            });
+        }
+
         const book = await Book.findById(req.params.id);
         if (!book) {
             return res.status(404).json({ message: "Book not found" });
         }
 
-        // Authorization check
-        if (book.user.toString() !== req.user._id.toString()) {
-            return res.status(401).json({ message: "Not authorized" });
+        if (book.user.toString() !== req.user._id) {
+            return res.status(403).json({ message: "Not authorized to update this book" });
         }
 
-        // Delete image from Cloudinary
-        if (book.image) {
-            try {
-                // Extract public_id from URL (format: https://res.cloudinary.com/.../image.jpg)
-                const public_id = book.image.split("/").slice(-2).join("/").split(".")[0];
-                await cloudinary.uploader.destroy(public_id);
-            } catch (deleteError) {
-                console.error("Cloudinary deletion error:", deleteError);
-                // Continue with deletion even if image deletion fails
-            }
-        }
-
-        await book.deleteOne();
-        res.json({ message: "Book deleted successfully" });
-
+        book.title = title;
+        book.caption = caption;
+        book.rating = rating;
+        
+        const updatedBook = await book.save();
+        res.status(200).json({ 
+            message: "Book updated successfully",
+            book: updatedBook
+        });
     } catch (error) {
-        console.error("Error in delete book route:", error);
+        console.error("Error in update book route:", error);
         res.status(500).json({ 
             message: error.message || "Internal server error" 
         });
