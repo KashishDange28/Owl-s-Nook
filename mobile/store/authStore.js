@@ -1,142 +1,108 @@
-// mobile/store/authStore.js
 import { create } from 'zustand';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-export const useAuthStore = create((set, get) => ({
+const API_URL = 'http://10.31.47.242:3000/api';
+
+const useAuthStore = create((set, get) => ({
     user: null,
     token: null,
     isLoading: false,
     isAuthenticated: false,
 
-    // Initialize auth state from AsyncStorage
     initAuth: async () => {
         try {
             const storedToken = await AsyncStorage.getItem('token');
             const storedUser = await AsyncStorage.getItem('user');
-            
+
             if (storedToken && storedUser) {
-                set({ 
+                set({
                     token: storedToken,
                     user: JSON.parse(storedUser),
                     isAuthenticated: true
                 });
             }
-        } catch (error) {
-            // Handle initialization error silently
+        } catch {
             await AsyncStorage.removeItem('token');
             await AsyncStorage.removeItem('user');
         }
     },
 
-    // Register function
     register: async (username, email, password) => {
         set({ isLoading: true });
         try {
-            const response = await fetch("http://192.168.56.1:3000/api/auth/register", {
+            const response = await fetch(`${API_URL}/auth/register`, {
                 method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({
-                    username,
-                    email,
-                    password,
-                }),
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ username, email, password }),
             });
 
             const data = await response.json();
 
-            if (!response.ok) {
-                throw new Error(data.message || "Registration failed");
-            }
+            if (!response.ok) throw new Error(data.message || "Registration failed");
 
             await AsyncStorage.setItem("user", JSON.stringify(data.user));
             await AsyncStorage.setItem("token", data.token);
 
-            set({ 
-                user: data.user, 
-                token: data.token, 
+            set({
+                user: data.user,
+                token: data.token,
                 isLoading: false,
-                isAuthenticated: true 
+                isAuthenticated: true
             });
-            return { success: true };
 
+            return { success: true };
         } catch (error) {
             set({ isLoading: false });
-            return { 
-                success: false, 
-                message: error.message || "Registration failed" 
-            };
+            return { success: false, message: error.message };
         }
     },
 
-    // Login function
     login: async (email, password) => {
         set({ isLoading: true });
         try {
-            const response = await fetch("http://192.168.56.1:3000/api/auth/login", {
+            const response = await fetch(`${API_URL}/auth/login`, {
                 method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({
-                    email,
-                    password,
-                }),
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ email, password }),
             });
 
             const data = await response.json();
 
-            if (!response.ok) {
-                throw new Error(data.message || "Invalid credentials");
-            }
+            if (!response.ok) throw new Error(data.message || "Invalid credentials");
 
-            // Store auth data in AsyncStorage
             await AsyncStorage.setItem("user", JSON.stringify(data.user));
             await AsyncStorage.setItem("token", data.token);
 
-            // Update state
-            set({ 
-                user: data.user, 
-                token: data.token, 
+            set({
+                user: data.user,
+                token: data.token,
                 isLoading: false,
-                isAuthenticated: true 
+                isAuthenticated: true
             });
-            return { success: true };
 
+            return { success: true };
         } catch (error) {
             set({ isLoading: false });
-            return { 
-                success: false, 
-                message: error.message || "Login failed" 
-            };
+            return { success: false, message: error.message };
         }
     },
 
-    // Logout function
     logout: async () => {
         try {
-            await AsyncStorage.removeItem("token");
-            await AsyncStorage.removeItem("user");
-            set({ 
-                user: null, 
-                token: null, 
-                isAuthenticated: false 
-            });
+            await AsyncStorage.removeItem('user');
+            await AsyncStorage.removeItem('token');
+            set({ user: null, token: null, isAuthenticated: false });
             return { success: true };
-        } catch (error) {
-            return { 
-                success: false, 
-                message: "Logout failed" 
-            };
+        } catch {
+            return { success: false, message: "Logout failed" };
         }
     },
 
-    // Check if user is authenticated
     checkAuth: () => {
         const state = get();
-        return state.isAuthenticated && state.token !== null;
+        return state.isAuthenticated && !!state.token;
     }
 }));
 
 export default useAuthStore;
+export { useAuthStore };

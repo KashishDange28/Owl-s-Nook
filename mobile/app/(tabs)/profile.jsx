@@ -1,4 +1,3 @@
-// mobile/app/(tabs)/profile.jsx
 import { View, Text, SafeAreaView, Image, TouchableOpacity, ScrollView, Alert, Modal, TextInput } from 'react-native';
 import { useAuthStore } from '../../store/authStore';
 import { useRouter } from 'expo-router';
@@ -9,6 +8,8 @@ import { useEffect, useState } from 'react';
 import styles from '../../assets/styles/profile.styles';
 import axios from 'axios';
 import * as ImagePicker from 'expo-image-picker';
+
+const API_URL = 'http://10.31.47.242:3000/api';
 
 export default function Profile() {
   const { user, logout } = useAuthStore();
@@ -37,7 +38,7 @@ export default function Profile() {
     try {
       const token = useAuthStore.getState().token;
       const response = await axios.put(
-        'http://192.168.56.1:3000/api/users/profile',
+        `${API_URL}/users/profile`,
         { username: newUsername },
         { headers: { Authorization: `Bearer ${token}` } }
       );
@@ -48,7 +49,7 @@ export default function Profile() {
       // Refresh user data to ensure everything is up to date
       try {
         const profileResponse = await axios.get(
-          'http://192.168.56.1:3000/api/users/profile',
+          `${API_URL}/users/profile`,
           { headers: { Authorization: `Bearer ${token}` } }
         );
         useAuthStore.setState({ user: profileResponse.data });
@@ -122,7 +123,7 @@ export default function Profile() {
           // Upload to backend
           const token = useAuthStore.getState().token;
           axios.put(
-            'http://192.168.56.1:3000/api/users/profile/image',
+            `${API_URL}/users/profile/image`,
             { image: base64 },
             { headers: { Authorization: `Bearer ${token}` } }
           )
@@ -132,7 +133,7 @@ export default function Profile() {
             
             // Refresh user data
             axios.get(
-              'http://192.168.56.1:3000/api/users/profile',
+              `${API_URL}/users/profile`,
               { headers: { Authorization: `Bearer ${token}` } }
             )
             .then((profileResponse) => {

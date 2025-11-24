@@ -37,34 +37,37 @@ export default function CreateBook() {
         return;
       }
 
-      // Pick image
+      // Pick image with optimized settings
       const result = await ImagePicker.launchImageLibraryAsync({
         mediaTypes: ImagePicker.MediaTypeOptions.Images,
         allowsEditing: true,
         aspect: [4, 3],
-        quality: 1,
+        quality: 0.8, // Slightly reduced quality for better performance
         base64: true,
+        exif: false, // Don't include EXIF data to reduce size
       });
 
-      if (!result.canceled) {
+      if (!result.canceled && result.assets && result.assets.length > 0) {
         const imageUri = result.assets[0].uri;
-        const base64 = result.assets[0].base64;
+        let base64 = result.assets[0].base64;
         
-        // Validate image size
+        // Process the image if it's too large
         const response = await fetch(imageUri);
         const blob = await response.blob();
-        const imageSize = blob.size;
         
-        if (imageSize > 5000000) { // 5MB limit
-          Alert.alert(
-            'Image Too Large',
-            'Please select an image smaller than 5MB.'
+        // If image is larger than 2MB, compress it further
+        if (blob.size > 2000000) {
+          const compressedImage = await ImageManipulator.manipulateAsync(
+            imageUri,
+            [{ resize: { width: 1200 } }],
+            { compress: 0.7, format: ImageManipulator.SaveFormat.JPEG, base64: true }
           );
-          return;
+          base64 = compressedImage.base64;
         }
 
         handleInputChange('image', imageUri);
         handleInputChange('base64Image', base64);
+        
         Alert.alert(
           'Image Selected',
           'Your book image has been selected. Tap Save to add the book.'

@@ -15,7 +15,7 @@ import { Ionicons } from '@expo/vector-icons';
 import COLORS from "../../constants/colors.js";
 import { Stack, Link, useRouter } from 'expo-router';
 import { Dimensions } from 'react-native';
-import { useAuthStore } from '../../store/authStore';
+import { useAuthStore } from '../../store/authStore.js';
 
 const { width, height } = Dimensions.get("window");
 
